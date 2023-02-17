@@ -9,7 +9,7 @@ memgrind: memgrind.o mymalloc.o
 err: err.o mymalloc.o
 	gcc -o err err.o mymalloc.o
 
-test.o: test.c
+test.o: test.c mymalloc mymalloc.h
 	gcc -c test.c
 
 mymalloc.o: mymalloc.c mymalloc.h
