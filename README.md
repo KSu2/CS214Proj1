@@ -36,3 +36,4 @@ Test Plan
 Proof of design properties functioning properly
 
 Additional design notes
+- initialize memory blocks with value 2 and for every subsequent memory block increment this value by 1
