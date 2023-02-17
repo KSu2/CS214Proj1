@@ -15,6 +15,7 @@ Test Plan
     
     (b) We intend to check these properties by creating 5 tests in test.c in various methods to evaluate how the methods(malloc and free) and the array interact with each other as well as the performace tests in memegrind.c
     
+    
     (c)	
     Correctness tests
 		
