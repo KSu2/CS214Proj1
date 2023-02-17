@@ -28,30 +28,41 @@ void *mymalloc(size_t size, char *file, int line){
 		for(i = 0; i < size; i++) {
 			memory[i + 2] = chunk_val;
 		}
-		printf("value of byte before pointer: %d\n", *((char *)p - 1));
-		printf("value of byte at pointer: %d\n", *((char *) p));
 	}
 	
 	else {
 		//check whether we have reached the end of the memory or not
-		i = 1;
-		while(i < MEMSIZE) {
+		i = 0;
+		while(i < (MEMSIZE - 1)) {
+			printf("value of memory[i]: %d \n", (int) memory[i]);
+			printf("value of memory[i + 1]: %d \n", (int) memory[i + 1]);
 			//add num of bytes to i equal to memory[i] which is the size of the current chunk
-			if(memory[i] == 0){
+			if((int) memory[i] == 0){
 				break;
 			}
 			else{
 				chunk_val++;
-				i = i + memory[i];
+				i = i + (int) memory[i + 1] + 1;
+				printf("i value: %d\n", i);
 			}	
 		}
 		//assign p with the address of the start of the chunk being assigned
-		p = (memory + (i + 1));
-		i = i + 1;
-	       	while(i < (size + 1)) {
-			memory[i] = chunk_val;
-		}	
-			
+		
+		//only one byte left in memory
+		if(i == (4095)){
+			printf("malloc: no free blocks of memory (%s:%d)\n", file, line); 
+		}
+		else{
+			//return pointer to next available 
+			p = (void*) (memory + i);
+			memory[i] = 1;
+			i = i + 1;
+			memory[i] = size;
+			i = i + 1;
+	       		while(i < (size + 1)) {
+				memory[i] = chunk_val;
+			}	
+		}
 	}
 	return p;
 }
