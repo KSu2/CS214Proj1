@@ -100,7 +100,7 @@ void task5() {
                 pointers[i] = p;
         }
 
-        for (i = num_pointers; i >= 0; i--) {
+        for (i = num_pointers-1; i >= 0; i--) {
                 free(pointers[i]);
         }	
 }
