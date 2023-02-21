@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include "mymalloc.h"
 /**
  * Performance testing
@@ -69,15 +70,41 @@ void task3() {
 }
 
 
-/**
+// spliting the 4096 byte array into random nuber of chunks using malloc by powers of 2 then free 
 void task4() {
-	//task 4: design a performance test
+	srand(time(NULL));
+	int i;
+	int num_pointers = 4096/(pow(2,1+(rand() % 12)));
+    void * pointers[num_pointers];
+	void * p;
+        for (i = 0; i < num_pointers; i++) {
+                p = malloc(4096/num_pointers);
+                pointers[i] = p;
+        }
+
+        for (i = 0; i < num_pointers; i++) {
+                free(pointers[i]);
+        }
+
+
+}
+//random stress test then free them in reverse
+void task5() {
+	srand(time(NULL));
+	int i;
+	int num_pointers = 1+(rand() % 128);
+    void * pointers[num_pointers];
+	void * p;
+        for (i = 0; i < num_pointers; i++) {
+                p = malloc(4096/num_pointers);
+                pointers[i] = p;
+        }
+
+        for (i = num_pointers; i >= 0; i--) {
+                free(pointers[i]);
+        }	
 }
 
-void task5() {
-	//task 5: design a performance test
-}
-*/
 
 
 int main() {
