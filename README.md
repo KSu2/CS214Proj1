@@ -26,16 +26,16 @@ GROUP MEMBERS: Kevin Su (ks1507)
 	
 Test.c
 ---
-Test 1: Free memory that isnt already allocated  by malloc()
+Test 1: Free the memory at an address that isn't returned by malloc()
 
-Test 2: Free the memory at an address that isn't returned by malloc()
-	
-Test 3: Free the same address a second time
+Test 2: Free the same address a second time
 
-Test 4: Run a valid test to see if our malloc() and free() works
+Test 3: Free memory that isnt already allocated  by malloc()
 	
-Test 5: Allocate memory that is larger than the global array
-	
+Test 4: Allocate memory that is larger than the global array
+
+Test 5: Run a valid test to see if our malloc() and free() works
+
 Test2.c
 ---
 Test 6: check if free() coalesces previous chunks
