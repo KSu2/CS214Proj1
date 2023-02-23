@@ -20,7 +20,7 @@ GROUP MEMBERS: Kevin Su (ks1507)
 
 6. After checking if the pointer is valid or not a call to free should mark the chunk as unoccupied and check for coalescing
     
-(b) We intend to check these 6 properties listed by creating additional test files: test.c and tset2.c which will go over each of the cases described above. We will use various methods to evaluate how the methods(malloc and free) and the array interact with each other as well as the performace tests in memegrind.c
+(b) We intend to check these 6 properties listed by creating additional test files: test.c and test2.c which will go over each of the cases described above. We will use various methods to evaluate how the methods(malloc and free) and the array interact with each other as well as the performace tests in memegrind.c. The first test file (test.c) will take a look at the basic cases as well as some edge case like call malloc twice or allocating memory which is too large for the global array. The second test file (test2.c) places a special emphasis on how well does the free method coalesce the free chuncks of memory. 
     
 (c)Correctness tests
 	
