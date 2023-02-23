@@ -1,4 +1,4 @@
-# CS214Proj1
+# CS214 Proj 1
 
 GROUP MEMBERS: Kevin Su (ks1507)
                Ghautham Sambabu (gs878)
@@ -6,7 +6,7 @@ GROUP MEMBERS: Kevin Su (ks1507)
 # Test Plan
 (a) The properties that our library needs to have in order for it to be correct is:
         
-1. A call to malloc should find the next available chunk that is big enough to accomodate the number of bytes requested and return a pointer to the payload of tat chunk
+1. A call to malloc should find the next available chunk that is big enough to accomodate the number of bytes requested and return a pointer to the payload of that chunk
 	- if the chunk is big enough to split we will create one chunk with size
 	- ow return the entire chunk 
 
@@ -20,7 +20,7 @@ GROUP MEMBERS: Kevin Su (ks1507)
 
 6. After checking if the pointer is valid or not a call to free should mark the chunk as unoccupied and check for coalescing
     
-(b) We intend to check these 6 properties listed by creating additional test files: test.c and test2.c which will go over each of the cases described above. We will use various methods to evaluate how the methods(malloc and free) and the array interact with each other as well as the performace tests in memegrind.c. The first test file (test.c) will take a look at the basic cases as well as some edge case like call malloc twice or allocating memory which is too large for the global array. The second test file (test2.c) places a special emphasis on how well does the free method coalesce the free chuncks of memory. 
+(b) We intend to check these 6 properties listed by creating additional test files: test.c and tset2.c which will go over each of the cases described above. We will use various methods to evaluate how the methods(malloc and free) and the array interact with each other. More specifically, in our mymalloc.c source code we use conditional compilation by checking for the definition of a test macro. When we link our test.c file and mymalloc.c we include this macro providing us additional print and debugging statements for the sake of our correctness testing. We additionally make use of the basic test cases provided to us in err.c and used that to provide a base line level of correctness testing for our code. 
     
 (c)Correctness tests
 	
@@ -46,7 +46,11 @@ Test 8: check if free() coalesces previous and future chunks
 	
 err.c
 ---
-Given 
+case 1: check if myfree() prints an error when passed a non-block pointer (property 3) 
+
+case 2: check if myfree() prints an error when passed a ptr that isn't at the start of a chunk (property 4)
+
+case 3: check if myfree() prints an error when passed a ptr to a chunk that has already been freed (property 5)
     
 (d) Performace tests(outside of the ones assigned)
 
@@ -90,6 +94,15 @@ To run correctness tests:
 ```
 
 # Proof of design properties functioning properly
+
+err.c
+- case 1: successfully gives us an error message
+- case 2: successfully gives us an error message
+- case 3: successfully gives us an error message
+
+test.c
+
+
 
 # Additional design notes
 - Our meta data is 9 bytes
