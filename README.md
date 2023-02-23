@@ -59,11 +59,34 @@ We randomly choose the number of pointers to then use that number to divide the 
 available then free the memory in reverse
 
 # How to run code
+
+First need to build executable files:
 ```
 make test
 make test2
 make err
 make memgrind
+```
+To run performance tests:
+```
+./memgrind
+```
+
+To run correctness tests:
+```
+./err 1
+./err 2
+./err 3
+
+./test 1
+./test 2
+./test 3
+./test 4
+
+./test2 1
+./test2 2
+./test2 3
+./test2 4
 ```
 
 # Proof of design properties functioning properly
