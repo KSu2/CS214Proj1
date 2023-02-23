@@ -7,7 +7,7 @@ test2: test2.o mymalloc.o
 	gcc -o test2 test2.o mymalloc.o
 
 memgrind: memgrind.o mymalloc.o
-	gcc -o memgrind memgrind.o mymalloc.o
+	gcc -o memgrind memgrind.o mymalloc.o -lm
 
 err: err.o mymalloc.o
 	gcc -o err err.o mymalloc.o

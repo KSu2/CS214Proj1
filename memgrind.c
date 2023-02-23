@@ -3,6 +3,7 @@
 #include <time.h>
 #include <math.h>
 #include "mymalloc.h"
+
 /**
  * Performance testing
  *
@@ -23,8 +24,6 @@ void task1() {
 	//task 1
         int i;
         void * p;
-        //last added pointer to the list
-        int counter;
         for (i = 0; i < 120; i++) {
                 p = malloc(1);
                 free(p);
@@ -32,7 +31,6 @@ void task1() {
 }
 
 void task2() {
-	printf("start task 2");
 	int i;
 	int num_pointers = 120;
         void * pointers[num_pointers];
@@ -43,44 +41,62 @@ void task2() {
         }
 
         for (i = 0; i < num_pointers; i++) {
-                printf("curr pointer: %p\n", pointers[i]);
 		free(pointers[i]);
         }
 }
 
 void task3() {
 	srand(time(NULL));
+	//index of last pointer from malloc()
 	int i = 0;
+	//counter of times malloc() was called
 	int counter = 0;
+	//current count of pointers
+	int curr_pointers = 0;
 	int num_pointers = 120;
+	
 	void * p;
 	double r;
 	void * pointers[num_pointers];
-        for (i = 0; i < num_pointers; i++) {
-                //random binary 0 or 1
-                r = rand() % 2;
-                if(r == 0){
-                        p = malloc(1);
-                        pointers[counter] = p;
-                        counter++;
+        
+	while (counter < 120) {
+                //random binary 0 or 1 
+		r = rand() % 2;
+		
+		if(r == 0){
+                	counter++;
+			curr_pointers++;
+			if(counter != 1){
+				i++;
+			}
+			p = malloc(1);
+                        pointers[i] = p;
                 }
-                else{
-                        free(pointers[counter]);
-                        counter--;
+		//if r == 1 and there is a valid chunk free it
+		else if(curr_pointers > 0){
+		        free(pointers[i]);
+                	i--; 
+			curr_pointers--;
                 }
-        }	
+        }
+	//free the rest of the pointers
+	while(i > 0) {
+		free(pointers[i]);
+		i--;
+	}	
 }
 
 
-// spliting the 4096 byte array into random nuber of chunks using malloc by powers of 2 then free 
+// spliting the 4096 byte array into random nuber of chunks using malloc by powers of 2 then freie 
 void task4() {
 	srand(time(NULL));
 	int i;
 	int num_pointers = 4096/(pow(2,1+(rand() % 12)));
-    void * pointers[num_pointers];
+    	printf("num_pointers: %d\n", num_pointers);
+	void * pointers[num_pointers];
 	void * p;
         for (i = 0; i < num_pointers; i++) {
-                p = malloc(4096/num_pointers);
+                p = malloc(1);
                 pointers[i] = p;
         }
 
@@ -90,15 +106,17 @@ void task4() {
 
 
 }
+
 //random stress test then free them in reverse
 void task5() {
 	srand(time(NULL));
 	int i;
 	int num_pointers = 1+(rand() % 128);
-    void * pointers[num_pointers];
+	printf("num_pointers: %d\n", num_pointers);
+    	void * pointers[num_pointers];
 	void * p;
         for (i = 0; i < num_pointers; i++) {
-                p = malloc(4096/num_pointers);
+                p = malloc(1);
                 pointers[i] = p;
         }
 
@@ -115,7 +133,7 @@ int main() {
 	double time_taken;
 		
 	//run each task 50 times counting number of seconds it takes to run each task
-	for (i = 0; i < 3; i++) {
+	for (i = 0; i < 5; i++) {
 		time_taken = 0;
 		for (j = 0; j < 50; j++) {
 			t = clock();
@@ -125,9 +143,16 @@ int main() {
 			else if(i == 1) {
 				task2();
 			}
-			//else if(i == 2){
-			//	task3();
-			//}
+			else if(i == 2){
+				task3();
+			}
+			else if(i == 3){
+				task4();
+			}
+			else if(i == 4){
+				task5();
+			}
+
 			t = clock() - t;	
 			time_taken += ((double)t)/CLOCKS_PER_SEC;
 		}

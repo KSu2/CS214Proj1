@@ -1,16 +1,20 @@
 #include <stdio.h>
 #include "mymalloc.h"
 
+//check basic free case
 void test_one(){
 	int testOne = 23;
 	void * a = &testOne;
 	free(a);
 }
+
+//check free for pointer not at beginning of chunk
 void test_two(){
     int * testTwo = (int*) malloc(sizeof(int)*100);
     free(testTwo+10);
 }
 
+//check double free
 void test_three(){
     int *testThree = (int*) malloc(100);
     free(testThree);
@@ -32,9 +36,11 @@ void test_four(){
     }
 }
 
+//check allocating more than 4069 bytes
 void test_five(){
-    int *t = (int*) malloc(5000);
+    void * t = malloc(5000);
 }
+
 int main() {
 	void* p = malloc(sizeof(int));
 	
