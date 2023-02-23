@@ -6,7 +6,7 @@ GROUP MEMBERS: Kevin Su (ks1507)
 # Test Plan
 (a) The properties that our library needs to have in order for it to be correct is:
         
-1. A call to malloc should find the next available chunk that is big enough to accomodate the number of bytes requested
+1. A call to malloc should find the next available chunk that is big enough to accomodate the number of bytes requested and assign 
 
 2. A call to malloc should detect if there's enough space in the memory array to accomodate the number of bytes requested if not it should return an error message
         
@@ -57,5 +57,6 @@ Additional design notes
 	- the next four bytes indicate the size of the previous chunk
 	- the next four bytes indicate the size of the chunk
 - We use eager coalescing
-	- every time free is called we check to see if there are any adjacent free blocks to the current chunk and if so we coalesce them
-- Similar to real malloc() if mymalloc() is passed 0 as an argument it returns a NULL pointer
+	- every time free is called we check to see if there are any adjacent free blocks to the current chunk and if so we coalesce them.
+- Similar to real malloc() if mymalloc() is passed 0 as an argument it returns a NULL pointer.
+- If malloc() finds a chunk that can accomodate the number of bytes requested but cannot meaningfully split the chunk into another chunk it will return the pointer to the payload of that chunk.
