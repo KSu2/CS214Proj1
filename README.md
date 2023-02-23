@@ -52,3 +52,4 @@ Additional design notes
 	- the next four bytes indicate the size of the chunk
 - We use eager coalescing
 	- every time free is called we check to see if there are any adjacent free blocks to the current chunk and if so we coalesce them
+- Similar to real malloc() if mymalloc() is passed 0 as an argument it returns a NULL pointer
