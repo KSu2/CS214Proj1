@@ -32,7 +32,9 @@ Test Plan
 Proof of design properties functioning properly
 
 Additional design notes
-- our meta data is 9 bytes
+- Our meta data is 9 bytes
 	- the first byte indicates whether or not the chunk is being occupied 
 	- the next four bytes indicate the size of the previous chunk
 	- the next four bytes indicate the size of the chunk
+- We use eager coalescing
+	- every time free is called we check to see if there are any adjacent free blocks to the current chunk and if so we coalesce them
