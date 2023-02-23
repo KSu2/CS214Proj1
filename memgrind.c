@@ -31,6 +31,7 @@ void task1() {
 }
 
 void task2() {
+	printf("start task 2");
 	int i;
 	int num_pointers = 120;
         void * pointers[num_pointers];
@@ -41,7 +42,8 @@ void task2() {
         }
 
         for (i = 0; i < num_pointers; i++) {
-                free(pointers[i]);
+                printf("curr pointer: %p\n", pointers[i]);
+		free(pointers[i]);
         }
 }
 
@@ -87,8 +89,9 @@ int main() {
 		
 	//run each task 50 times counting number of seconds it takes to run each task
 	for (i = 0; i < 3; i++) {
-		t = clock();
+		time_taken = 0;
 		for (j = 0; j < 50; j++) {
+			t = clock();
 			if(i == 0) {
 				task1();
 			}
@@ -98,11 +101,10 @@ int main() {
 			//else if(i == 2){
 			//	task3();
 			//}
-			
+			t = clock() - t;	
+			time_taken += ((double)t)/CLOCKS_PER_SEC;
 		}
-		t = clock() - t;
-		time_taken = ((double)t)/CLOCKS_PER_SEC;
-		printf("--- task: %d took %f seconds to execute ---\n",(i+1),time_taken);
+		printf("--- task: %d took an average of %f seconds to execute ---\n",(i+1),(time_taken/50));
 	}
 	return 0;
 }
