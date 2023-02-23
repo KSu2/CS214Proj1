@@ -3,7 +3,7 @@
 GROUP MEMBERS: Kevin Su (ks1507)
                Ghautham Sambabu (gs878)
 
-Test Plan
+# Test Plan
     (a) The properties that our library needs to have in order for it to be correct is:
         
         1. A working malloc method that save memory within the file limit
@@ -16,8 +16,10 @@ Test Plan
     
     
     (c)	Correctness tests
-		
-        Test 1: Free memory that isnt already allocated  by malloc()
+	
+	Test.c
+        ---
+	Test 1: Free memory that isnt already allocated  by malloc()
 
 	Test 2: Free the memory at an address that isn't returned by malloc()
 	
@@ -25,7 +27,19 @@ Test Plan
 	
 	Test 4: Run a valid test to see if our malloc() and free() works
 	
-	Test 5: Allocate memory that is larger than the global array     
+	Test 5: Allocate memory that is larger than the global array
+	
+	Test2.c
+	---
+	Test 6: check if free() coalesces previous chunks
+	
+	Test 7: check if free() coalesces future chunks
+	
+	Test 8: check if free() coalesces previous and future chunks
+	
+	err.c
+	---
+	Given 
     
     (d) Performace tests(outside of the ones assigned)
 
