@@ -4,21 +4,21 @@ GROUP MEMBERS: Kevin Su (ks1507)
                Ghautham Sambabu (gs878)
 
 # Test Plan
-    (a) The properties that our library needs to have in order for it to be correct is:
+(a) The properties that our library needs to have in order for it to be correct is:
         
-        1. A call to malloc should find the next available chunk that is big enough to accomodate the number of bytes requested
-	
-	2. A call to malloc should detect if there's enough space in the memory array to accomodate the number of bytes requested if not it should return an error message
+1. A call to malloc should find the next available chunk that is big enough to accomodate the number of bytes requested
+
+2. A call to malloc should detect if there's enough space in the memory array to accomodate the number of bytes requested if not it should return an error message
         
-        3. A call to free should check if the ptr passed to it is a pointer to a chunk in the static memory array if not it should print the following error message: 
+3. A call to free should check if the ptr passed to it is a pointer to a chunk in the static memory array if not it should print the following error message: 
 	
-	4. A call to free should check if the ptr passed to it is pointing to the beginning of a chunk if not it should print the following error message:
+4. A call to free should check if the ptr passed to it is pointing to the beginning of a chunk if not it should print the following error message:
 	
-	5. A call to free should check if the 
+5. A call to free should check if the 
         
-        4. A global static array that stores/deallocates data and metadata based on the calls from malloc and free methods
+4. A global static array that stores/deallocates data and metadata based on the calls from malloc and free methods
     
-    (b) We intend to check these properties by creating 5 tests in test.c in various methods to evaluate how the methods(malloc and free) and the array interact with each other as well as the performace tests in memegrind.c
+(b) We intend to check these properties by creating 5 tests in test.c in various methods to evaluate how the methods(malloc and free) and the array interact with each other as well as the performace tests in memegrind.c
     
     
     (c)	Correctness tests
