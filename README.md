@@ -51,8 +51,12 @@ Given
 (d) Performace tests(outside of the ones assigned)
 
 Task4(): 
+We split the 4096 byte array into random number of chunks which are determined by powers of 2 (1-12) 
+then free the chunk(s)  
 
 Task5(): 
+We randomly choose the number of pointers to then use that number to divide the total number of bytes of the 4096 bytes
+available then free the memory in reverse
 
 # Proof of design properties functioning properly
 
