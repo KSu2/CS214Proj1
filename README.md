@@ -58,6 +58,14 @@ Task5():
 We randomly choose the number of pointers to then use that number to divide the total number of bytes of the 4096 bytes
 available then free the memory in reverse
 
+# How to run code
+```
+make test
+make test2
+make err
+make memgrind
+```
+
 # Proof of design properties functioning properly
 
 # Additional design notes
