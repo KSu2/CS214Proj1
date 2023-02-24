@@ -15,23 +15,37 @@ void test_two(){
 
 //check basic free case
 void test_three(){
-	int testOne = 23;
-	void * a = &testOne;
-	free(a);
+        int testOne = 23;
+        void * a = &testOne;
+        free(a);
+}
+
+//check allocating more than 4069 bytes
+void test_four(){
+    void * t = malloc(5000);
 }
 
 
-int main() {
+int main(int argc, char **argv){
+        int test = argc > 1 ? atoi(argv[1]) : 0;
 
-	test_one();
-	
-	test_two();
-	
-	test_three();
-		
-	test_four();
+        switch (test) {
+                default:
+                        puts("Missing or invalid test number");
+                        return EXIT_FAILURE;
 
-	test_five();
-
-	return 0;
+                case 1:
+                        test1();
+                        break;
+                case 2:
+                        test2();
+                        break;
+                case 3:
+                        test3();
+                        break;
+                case 4:
+                        test4();
+                        break;
+	}
 }
+	
