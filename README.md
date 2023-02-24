@@ -101,11 +101,14 @@ To run correctness tests (./[test-executable] [test-number]) :
 # Proof of design properties functioning properly
 
 err.c
-- case 1: successfully gives us an error message
-- case 2: successfully gives us an error message
-- case 3: successfully gives us an error message
+- case 1: successfully gives us an error message, free: attempt to free non-block ptr (err.c:16)
+- case 2: successfully gives us an error message, free: attempt to free pointer not pointing to start of chunk (err.c:20)
+- case 3: successfully gives us an error message, free: attempt to free already freed chunk (err.c:26)
 
 test.c
+- test 1:  
+- test 2: 
+- 
 
 
 
@@ -114,7 +117,6 @@ test.c
 	- the first byte indicates whether or not the chunk is being occupied 
 	- the next four bytes indicate the size of the previous chunk
 	- the next four bytes indicate the size of the chunk
-- We use eager coalescing
-	- every time free is called we check to see if there are any adjacent free blocks to the current chunk and if so we coalesce them.
+- We use eager coalescing, every time free() is called we check to see if there are any adjacent free blocks to the current chunk and if so we coalesce them.
 - Similar to real malloc() if mymalloc() is passed 0 as an argument it returns a NULL pointer.
 - If malloc() finds a chunk that can accomodate the number of bytes requested but cannot meaningfully split the chunk into another chunk it will return the pointer to the payload of that chunk.
