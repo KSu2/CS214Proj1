@@ -40,15 +40,15 @@ Test1(): Check the edge cases of malloc sizes 4087, 4088, 4086, 4085, 4084. The 
 
 Test2(): Check if malloc(0) returns a NULL pointer. This checks our design decision to have malloc(0) return a NULL pointer instead of wasting memory by creating a new metadata header. 
 
-Test3(): Call malloc(455) 8 times. The result of this should be check if free() coalesces previous chunks
+Test3(): Call malloc(455) 8 times and store the pointers in an array. The result of this should be 8 occupied chunks with size 455 and one unoccupied chunk with size 375. Then proceed to free() on each pointer of the array starting from the beginning of the array. This will test whether or not coalescing with the previous chunks occurs testing property 6 of our design.
 
-Test4(): check if free() coalesces future chunks
+Test4(): In this test we initialize pointers array in the same way as test3() then we free the pointers this time starting from the end of the array. This will test whether or not coalescing with the next chunks occurs testing property 6 of our design.
 	
-Test5(): Check if a simple example of coalescing with the chunk after works properly.
+Test5(): Call malloc(1) and malloc(4077) storing the pointers in p1 and p2 respectively. This should leave memory as two chunks one with size 1 and the other with size 4077. After initializing the pointers we free p1 first then p2. Then we will check if coalescing with the next chunk occurs exactly once testing property 6 of our design.
 
-Test6(): Check if a simple example of coalescing with the chunk after works properly.
+Test6(): Call malloc(1) and malloc(4077) storing the pointers in p1 and p2 respectively. This should leave memory as two chunks one with size 1 and the other with size 4077. After initializing the pointers we free p2 first then p1. Then we will check if coalescing with the previous chunk occurs exactly once testing property 6 of our design.
 
-Test7(): Check if a simple example of coalescing with the chunks before and after works properly.
+Test7(): Call malloc(1335) three times and store the pointers in p1, p2, and p3 respectively. This should leave memory in three chunks two with size 1335 and the other with size 1399. After initializing the pointers we free p1, p3 and then p2. Then we will check if coalescing with the previous and next chunk occurs exactly once testing property 1 & 6 of our design.
 
 err.c
 ---
@@ -57,15 +57,16 @@ case 1: check if myfree() prints an error when passed a non-block pointer (prope
 case 2: check if myfree() prints an error when passed a ptr that isn't at the start of a chunk (property 4)
 
 case 3: check if myfree() prints an error when passed a ptr to a chunk that has already been freed (property 5)
-    
+
+
+Other than the test cases written above we added conditionally compiling printf() statements were added to the mymalloc() and myfree() functions to help verify these test cases.
+
 (d) Performace tests(outside of the ones assigned)
 
-Task4(): 
-We split the 4096 byte array into random number of chunks which are determined by powers of 2 (1-12) 
+Task4(): We split the 4096 byte array into random number of chunks which are determined by powers of 2 (1-12) 
 then free the chunk(s)  
 
-Task5(): 
-We randomly choose the number of pointers to then use that number to divide the total number of bytes of the 4096 bytes
+Task5(): We randomly choose the number of pointers to then use that number to divide the total number of bytes of the 4096 bytes
 available then free the memory in reverse
 
 # How to run code
