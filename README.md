@@ -1,6 +1,6 @@
 # CS214 Proj 1
 
-GROUP MEMBERS: Kevin Su (ks1507)
+GROUP MEMBERS: Kevin Su (ks1507),
                Ghautham Sambabu (gs878)
 
 # Test Plan
