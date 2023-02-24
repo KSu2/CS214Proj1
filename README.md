@@ -105,6 +105,10 @@ test.c test2():
 ```
 ./test 2
 ```
+test.c test4():
+```
+./test 3
+```
 
 test2.c test1():
 ```
@@ -113,6 +117,26 @@ test2.c test1():
 test2.c test2():
 ```
 ./test2 2
+```
+test2.c test3():
+```
+./test2 3
+```
+test2.c test4():
+```
+./test2 4
+```
+test2.c test5():
+```
+./test2 5
+```
+test2.c test6():
+```
+./test2 6
+```
+test2.c test7():
+```
+./test2 7
 ```
 
 # Proof of design properties functioning properly
@@ -126,8 +150,6 @@ test.c
 - test 1:  
 - test 2: 
 - 
-
-
 
 # Additional design notes
 - Our meta data is 9 bytes
