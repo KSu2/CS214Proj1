@@ -106,9 +106,13 @@ test.c test2():
 ```
 ./test 2
 ```
-test.c test4():
+test.c test3():
 ```
 ./test 3
+```
+test.c test4():
+```
+./test 4
 ```
 
 test2.c test1():
