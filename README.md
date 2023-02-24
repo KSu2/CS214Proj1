@@ -152,18 +152,19 @@ err.c
 - case 3: successfully gives us an error message, free: attempt to free already freed chunk (err.c:26)
 
 test.c
-- test 1:  
-- test 2: 
-- test 3:
+- test 1: successfully 
+- test 2: successfully
+- test 3: successfully 
 
 test2.c
 - test 1: 
-- test 2:
-- test 3: 
-- test 4:
-- test 5:
-- test 6:
-- test 7: 
+	- malloc(4078): receive messages "fill entire memory" which is expected as this is the biggest possible
+- test 2: successfully receive "SUCCESS! returned a NULL pointer" message meaning that our code didn't allocate memory when 0 bytes was requested
+- test 3: successfully receive "coalesce with chunk before" message 7 times and "coalesce with chunk before and after" messsage one time
+- test 4: successfully receive "coalesce with chunk after" message 8 times 
+- test 5: successfully receive only one "coalesce with chunk before" message 
+- test 6: successfully receive only one "coalesce with chunk after" message
+- test 7: successfully receive only one
 
 # Additional design notes
 - Our meta data is 9 bytes
