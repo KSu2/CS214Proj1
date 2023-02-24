@@ -6,19 +6,21 @@ GROUP MEMBERS: Kevin Su (ks1507)
 # Test Plan
 (a) The properties that our library needs to have in order for it to be correct is:
         
-1. A call to malloc should find the next available chunk that is big enough to accomodate the number of bytes requested and return a pointer to the payload of that chunk
-	- if the chunk is big enough to split we will create one chunk with size
-	- ow return the entire chunk 
+1. A call to malloc should find the first available chunk with a payload size that is big enough to accomodate the number of bytes requested and return a pointer to the payload of that chunk:
+	- If the chunk payload is big enough to split we will create one chunk with size requested and another with size (original_size - (size + meta_data_size)).
+	- Otherwise, we won't split and just assign the entire chunk as occupied. 
 
-2. A call to malloc should detect if there's enough space in the memory array to accomodate the number of bytes requested if not it should return an error message: "malloc: not enough space to create a free blocks of memory (%s:%d)\n", file, line
+2. A call to malloc should detect if there's enough space in the memory array to accomodate the number of bytes requested if not it should return an error message: "malloc: not enough space to create a free blocks of memory (%s:%d)\n", file, line.
         
-3. A call to free should check if the ptr passed to it is a pointer to a chunk in the static memory array if not it should print the following error message: "free: attempt to free non-block ptr (%s:%d)\n", file, line
+3. A call to free should check if the ptr passed to it is a pointer to a chunk in the static memory array if not it should print the following error message: "free: attempt to free non-block ptr (%s:%d)\n", file, line.
 	
-4. A call to free should check if the ptr passed to it is pointing to the beginning of a chunk if not it should print the following error message: "free: attempt to free pointer not pointing to start of chunk (%s:%d)\n", file, line
+4. A call to free should check if the ptr passed to it is pointing to the beginning of a chunk if not it should print the following error message: "free: attempt to free pointer not pointing to start of chunk (%s:%d)\n", file, line.
 	
-5. A call to free should check if chunk passed to it is occupied or not, ow it should print the following error message: "free: attempt to free already freed chunk (%s:%d)\n", file,line
+5. A call to free should check if chunk passed to it is occupied or not, ow it should print the following error message: "free: attempt to free already freed chunk (%s:%d)\n", file,line.
 
-6. After checking if the pointer is valid or not a call to free should mark the chunk as unoccupied and check for coalescing
+6. After checking if the pointer is valid or not a call to free should mark the chunk as unoccupied and check for coalescing.
+
+7. Our mymalloc() and myfree() should not try to access addresses outside of the memory array as this will lead to unintended behaviours..
     
 (b) We intend to check these 6 properties listed by creating additional test files: test.c and tset2.c which will go over each of the cases described above. We will use various methods to evaluate how the methods(malloc and free) and the array interact with each other. More specifically, in our mymalloc.c source code we use conditional compilation by checking for the definition of a test macro. When we link our test.c file and mymalloc.c we include this macro providing us additional print and debugging statements for the sake of our correctness testing. We additionally make use of the basic test cases provided to us in err.c and used that to provide a base line level of correctness testing for our code. The first test file (test.c) will take a look at the basic cases as well as some edge case like call malloc twice or allocating memory which is too large for the global array. The second test file (test2.c) places a special emphasis on how well does the free method coalesce the free chuncks of memory. 
     
