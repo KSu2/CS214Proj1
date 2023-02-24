@@ -82,22 +82,37 @@ To run performance tests:
 ```
 
 To run correctness tests (./[test-executable] [test-number]) :
+
+err case1: 
 ```
 ./err 1
+```
+err case2:
+```
 ./err 2
+```
+err case3:
+```
 ./err 3
-
-./test 1
-./test 2
-./test 3
-./test 4
-
-./test2 1
-./test2 2
-./test2 3
-./test2 4
 ```
 
+test.c test1():
+```
+./test 1
+```
+test.c test2():
+```
+./test 2
+```
+
+test2.c test1():
+```
+./test2 1
+```
+test2.c test2():
+```
+./test2 2
+```
 
 # Proof of design properties functioning properly
 
