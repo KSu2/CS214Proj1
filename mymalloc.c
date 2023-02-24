@@ -6,34 +6,13 @@
 
 static char memory[MEMSIZE];
 
-//helper method to display current chunks in the memory array
-void showmem() {
-        int i = 0;
-        int counter = 1;
-        while(i < (MEMSIZE - 8)) {
-                printf("chunk: %d\n", counter);
-                printf("is_occupied: %d\n", *(memory + i));
-                printf("prev_size: %d\n", *((int *)(memory + i + 1)));
-                printf("chunk_size: %d\n", *((int *)(memory + i + 5)));
-                i = i + *((int *)(memory + i + 5)) + 9;
-                counter++;
-        }
-}
-
-
 void *mymalloc(size_t size, char *file, int line){
-	//printf("mymalloc\n");	
-	//do check for adjacent memory
-	//eager coalescing method
-	//2 bytes for "metadata" - 1 for boolean and 14 for integer representing its size
-       	char *ptr = (char *) (memory); 
+	//9 bytes for "metadata"	
 	//create void pointer p	
 	void *p;
 	
 	//counting variables
 	int i;
-	int chunk_val = 2;
-	//check if first chunk in memory is unitizialized
 	
 	//edge case: malloc(0)
 	if(size == 0) {
@@ -43,15 +22,15 @@ void *mymalloc(size_t size, char *file, int line){
 	
 	//memory is uninitialized
 	else if(*((char *)memory) == 0 && *((int *)(memory + 5)) == 0) {
-		//printf("size: %d\n", (int) size);
-		//assign p to point to memory[2]
+		//if array is uninitialized the size of the payload is MEMSIZE - 9
 		if((MEMSIZE - 9) < size){
-                        printf("malloc: not enough space to create a free blocks of memory (%s:%d)\n", file, line);
-                        showmem();
-			p = (void*)0;
+                        printf("malloc: not enough space to allocate specified number of bytes (%s:%d)\n", file, line);
+                        p = (void*)0;
                 }
 		else if((MEMSIZE - 9) < size + 10){
+			#ifdef test
 			printf("fill entire memory\n");
+			#endif
 			p = (void *) (memory + 9);
 			*(memory) = 1;
 			*((int *)(memory + 1)) = 0;
@@ -82,53 +61,36 @@ void *mymalloc(size_t size, char *file, int line){
 		i = 0;
 		//get next free chunk in memory
 		int prev_chunk_size = 0;
-		while(i < (MEMSIZE - 1)) {
-			//printf("current value of i: %d\n", i);
-			//add num of bytes to i equal to memory[i] which is the size of the current chunk
-			//printf("size: %d\n", *((int *)(memory + i + 5)));
+		while(i < (MEMSIZE)) {
 			if(*((char *)(memory + i)) == 0 && *((int *)(memory + i + 5)) >= size){
 				break;
 			}
 			else{
-				chunk_val++;
 				//increment i by the size of chunk and metadata
 				prev_chunk_size = *((int *)(memory + i + 5));
 				i = i + *((int *)(memory + i + 5)) + 9;
 			}	
 		}
 
-		//assign p with the address of the start of the chunk being assigned
-		//if there are less than 5 bytes left in memory can't make a new chunk since 
 		
-		//printf("last value of i: %d\n", i);
-		//printf("current value of *((int *)(memory + i)): %d\n", *((char *)(memory + i)));
-		//printf("current value of *((int *)(memory + i + 1)): %d\n", *((int *)(memory + i + 1)));
-		//printf("current value of *((int *)(memory + i + 5)): %d\n", *((int *)(memory + i + 5)));
 		
-		//printf("size of last chunk: %d\n", (*((int *)(memory + i + 5))));
-		//printf("size: %ld\n", size);
-		//printf("size of last chunk - size: %ld\n", (*((int *)(memory + i + 5))) - size);
-		
-		//printf("(*((int *)(memory + i + 5)) - size): %ld\n", (*((int *)(memory + i + 5)) - size));
 		if((*((int *)(memory + i + 5))) < size){
-			printf("malloc: not enough space to create a free blocks of memory (%s:%d)\n", file, line); 
-			//showmem();
+			printf("malloc: not enough space to allocate specified number of bytes (%s:%d)\n", file, line); 
 			p = (void*)0;
 		}
 		
 		//enough space for the chunk but not enough room to split into another chunk
-		//since "metadata" is 9 bytes need at least 10 bytes to meaningfully split
-		else if(*((int *)(memory + i + 5)) < size + 10){
-                        //there is a chunk that has perfect size
-                        p = (void*) (memory + i + 9);
+		//since "metadata" is 9 bytes chunk_size needs to be > size + 10 bytes to meaningfully split
+		else if(*((int *)(memory + i + 5)) < (size + 10)){
+			#ifdef test
+			printf("assign entire chunk\n");
+			#endif
+			p = (void *)(memory + i + 9);
                         *(memory + i) = 1;
                         *((int *)(memory + i + 1)) = prev_chunk_size;
-                        //*((int *)(memory + i + 5)) = size;
                 }
-		//ow there is enough space to create a new
+		//There is enough space to split into two chunks
 		else{
-			//printf("prev_chunk_size: %d\n", prev_chunk_size);
-			
 			//return pointer to payload of the chunk 
 			p = (void*) (memory + i + 9);
 			
@@ -136,36 +98,21 @@ void *mymalloc(size_t size, char *file, int line){
 			*(memory + i) = 1;
 			*((int *)(memory + i + 1)) = prev_chunk_size;
 			*((int *)(memory + i + 5)) = size;
-			//printf("size of first chunk: %d\n", *((int *)(memory + i + 5)));
 			
-			//set next chunk to unoccupied with size = MEMSIZE - (i + 4)
+			
+			//set next chunk to unoccupied with size = MEMSIZE - (i + 9)
 			i = i + size + 9;
-			//printf("current value of i: %d\n", i);
+			
 			*(memory + i) = 0;
 			*((int *)(memory + i + 1)) = size;
 			*((int *)(memory + i + 5)) = MEMSIZE - (i + 9);
-			//printf("size of second chunk: %d\n", *((int *)(memory + i + 5)));
-			//printf("MEMSIZE - (i + 7): %d\n", MEMSIZE - (i + 9));
+			
 		}	
 	}
-	//showmem();
 	return p;
 }
 
 void myfree(void* ptr, char *file, int line){
-	//showmem();
-	//check if pointer is within the bounds of the addresses of the memory array 
-	//this will mean the pointer is from malloc ow it is not
-	//printf("Beginning of memory: %p\n", memory);
-	//printf("End of memory: %p\n", memory + MEMSIZE);
-	//printf("char* version: %p\n", (char*)ptr);
-	//printf("int* version: %p\n", (int*)ptr);
-	//printf("value of i: %ld\n", (((char *)ptr) - memory));
-	
-	//printf("(memory + 9): %p\n", (memory + 9));
-	//printf("(memory + MEMSIZE): %p\n", (memory + MEMSIZE));
-	//printf("--- BEFORE FREE ---\n");
-	//showmem();
 	if((char*)ptr >= (memory + 9) && (char*)ptr < (memory + MEMSIZE)){
 		//check if address is pointing to an active chunk
 		//error: double free
@@ -174,17 +121,12 @@ void myfree(void* ptr, char *file, int line){
 		//printf("value of ptr - 8: %d\n", *((int *)(ptr - 8)));
 		char * c = memory;
 		int i = 0;
-		char tf = 1;
+		char is_beginning = 1;
 		
 
-		while(i < (MEMSIZE - 8)) {
-                        //printf("i value: %d\n", i); 
-			//printf("(char *)ptr: %p\n", (char *)ptr);
-			//printf("(memory + i + 9): %p\n", (memory + i + 9));
-			//printf("*((int *)(memory + i + 5)): %d\n", *((int *)(memory + i + 5)));
-			if(((char *)ptr) == (memory + i + 9)){
-				//printf("hello world!\n");
-                                tf = 0;
+		while(i < (MEMSIZE)) {
+                        if(((char *)ptr) == (memory + i + 9)){
+				is_beginning = 0;
 				break;
                         }
                         else{
@@ -192,11 +134,10 @@ void myfree(void* ptr, char *file, int line){
                         }
                 }
 
-
 		//iterate through LL of chunks and check if any of the pointers are equivalent to the one passed 
 			
 
-		if(tf ==  1){
+		if(is_beginning ==  1){
 			printf("free: attempt to free pointer not pointing to start of chunk (%s:%d)\n", file, line);
 		}
 
@@ -210,8 +151,6 @@ void myfree(void* ptr, char *file, int line){
 
 
 		else{
-			int i;
-			//printf("valid pointer\n");
 			int size = *((int *)(ptr - 4));
 			int prev_size = *((int *)(ptr - 8));
 			//pointer to payload of chunk before
@@ -224,8 +163,10 @@ void myfree(void* ptr, char *file, int line){
 
                 	//do memory coalescing
 			//check if there is a unoccupied chunk before and a unoccupied chunk after
-			if((prev_size != 0 && *((char *)(chunk_before - 9)) == 0) && ((*((char *)(chunk_after - 9)) == 0))) {
-				//printf("coalesce with chunk before and after\n");
+			if((prev_size != 0 && *((char *)(chunk_before - 9)) == 0) && (((char *)chunk_after < (memory + (MEMSIZE - 9))) && (*((char *)(chunk_after - 9)) == 0))) {
+				#ifdef test
+                                printf("coalesce with chunk before and after\n");
+                                #endif
 				//remove the block after
 				size = size  + *((int *)(chunk_after - 4));
 				*((int *)(chunk_after - 4)) = 0;
@@ -239,17 +180,22 @@ void myfree(void* ptr, char *file, int line){
 				
 			}
 			//check if there is a unoccupied chunk after
-			else if((char *)(ptr + size) < (memory + MEMSIZE) && *((char *)(chunk_after - 9)) == 0){
-				//printf("coalesce with chunk after\n");
+			else if((char *)(chunk_after) < (memory + MEMSIZE) && *((char *)(chunk_after - 9)) == 0){
+				#ifdef test
+				printf("coalesce with chunk after\n");
+				#endif
+				
 				*((int *)(ptr - 4)) = *((int *)(chunk_after - 4)) + size + 9;
 				*((int *)(chunk_after - 4)) = 0;
 				*((int *)(chunk_after - 8)) = 0;
 			}
 			//check if there is a unoccupied chunk before
 			else if(prev_size != 0 && *((char*)(ptr - (prev_size + 18))) == 0){
-				//printf("coalesce with chunk before\n");
+				#ifdef test
+                                printf("coalesce with chunk before\n");
+                                #endif
+				
 				*((int *)(ptr - (prev_size + 13))) = *((int *)(ptr - (prev_size + 13))) + size + 9;
-				//printf("new size: %d\n", *((int *)(ptr - (prev_size + 13))));
 				*((int *)(ptr - 4)) = 0;
 				*((int *)(ptr - 8)) = 0;
 				if((char *)(ptr + size) < (memory + (MEMSIZE - 10))){
@@ -262,11 +208,6 @@ void myfree(void* ptr, char *file, int line){
 	}
 	//error: attempt to free non-block ptr
 	else{
-		//printf("pointer value: %p\n", (char*)ptr);
-		//printf("Beginning of memory: %p\n", (memory + 9));
-        	//printf("End of memory: %p\n", (memory + MEMSIZE));
 		printf("free: attempt to free non-block ptr (%s:%d)\n", file, line);
-	}
-	//printf("--- AFTER FREE ---\n");
-	//showmem();	
+	}	
 }

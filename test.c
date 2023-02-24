@@ -1,68 +1,86 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include "mymalloc.h"
 
-//check basic free case
-void test_one(){
-	int testOne = 23;
-	void * a = &testOne;
-	free(a);
-}
 
-//check free for pointer not at beginning of chunk
-void test_two(){
-    int * testTwo = (int*) malloc(sizeof(int)*100);
-    free(testTwo+10);
-}
 
-//check double free
-void test_three(){
-    int *testThree = (int*) malloc(100);
-    free(testThree);
-    free(testThree);
-}
-
-// Valid free
-void test_four(){
+// Check free
+void test1(){
     void * org = malloc(200);
     free(org);
     int * copy = org;
     org = malloc(200);
     free(org);
     if(org==copy){
-        printf("x = z = %p. New malloced address is the same as the old one.\n",copy);
+        printf("SUCCESS! x = z = %p. New malloced address is the same as the old one.\n",copy);
     }
     else{
-    	printf("Perfectly Valid Free().\n");
+    	printf("FAILURE! Invalid Free().\n");
     }
 }
 
 //check allocating more than 4069 bytes
-void test_five(){
-    void * t = malloc(5000);
+void test2(){
+    	void * t = malloc(5000);
+    	if(!t){
+    		printf("SUCCESS! returned a NULL pointer and didn't allocate 5000 bytes\n");
+    	}
+    	else{
+    		printf("FAILURE! didn't return a NULL pointer and allocated more bytes than exist in memory\n");
+    	}
+	free(t);
 }
 
-int main() {
-	void* p = malloc(sizeof(int));
-	
-	free(p);
-	int a = 1;
-	void* p2 = &a;
+void test3(){
+	void * p1 = malloc(4087);
+	//should print error message and return a null pointer
+	void * p2 = malloc(1);
+	if(!p2){
+		printf("SUCCESS! didn't allocate more than 4096 bytes\n");
+	}
+	else{
+		printf("FAILURE! didn't return a NULL pointer, therefore allocated more than 4986 bytes\n");
+	}
+}
+
+void test4(){
+	void * p1 = malloc(100);
+	void * p2 = malloc(100);
+	void * p3 = malloc(100);
+
 	free(p2);
-	// Performace tests
-	//Free mem that isnt malloc()
-	test_one();
-	
-	//Free the mem at an address that isnt returned by malloc()
-	test_two();
-	
-	//Free the same address a second time
-	test_three();
-		
-	//Run a valid test to see if our malloc() and free() works
-	test_four();
+	p2 = malloc(50);
+	free(p2);
+	if(p2){
+		printf("SUCCESS! allocated memory chunk between two other occupied chunks\n");
+	}
+	else{
+		printf("FAILURE! unable to allocate chunk\n"); 
+	}
+}
 
-	//Too much mem
-	test_five();
+int main(int argc, char **argv){
+	int test = argc > 1 ? atoi(argv[1]) : 0;
 
+    	switch (test) {
+    		default:
+        		puts("Missing or invalid test number");
+        		return EXIT_FAILURE;
+
+    		case 1:
+        		test1();
+        		break;
+    		case 2:
+        		test2();
+        		break;
+		case 3:
+			test3();
+			break;
+    		case 4: 
+			test4();
+			break;
+
+	}
 	return 0;
 }
