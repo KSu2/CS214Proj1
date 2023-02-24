@@ -26,23 +26,27 @@ GROUP MEMBERS: Kevin Su (ks1507)
 	
 Test.c
 ---
-Test 1: Free the memory at an address that isn't returned by malloc()
+Test1(): Free the memory at an address that isn't returned by malloc()
 
-Test 2: Free the same address a second time
+Test2(): Free the same address a second time
 
-Test 3: Free memory that isnt already allocated  by malloc()
+Test3(): Free memory that isnt already allocated  by malloc()
 	
-Test 4: Allocate memory that is larger than the global array
+Test4(): Allocate memory that is larger than the global array
 
-Test 5: Run a valid test to see if our malloc() and free() works
+Test5(): Run a valid test to see if our malloc() and free() works
 
 Test2.c
 ---
-Test 6: check if free() coalesces previous chunks
+Test1():
 
-Test 7: check if free() coalesces future chunks
+Test2():
+
+Test1(): check if free() coalesces previous chunks
+
+Test2(): check if free() coalesces future chunks
 	
-Test 8: check if free() coalesces previous and future chunks
+Test3(): check if free() coalesces previous and future chunks
 	
 err.c
 ---
@@ -76,7 +80,7 @@ To run performance tests:
 ./memgrind
 ```
 
-To run correctness tests:
+To run correctness tests (./[test-executable] [test-number]) :
 ```
 ./err 1
 ./err 2
@@ -92,6 +96,7 @@ To run correctness tests:
 ./test2 3
 ./test2 4
 ```
+
 
 # Proof of design properties functioning properly
 
