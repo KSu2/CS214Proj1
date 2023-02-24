@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 #include <stdio.h>
 #include "mymalloc.h"
 
@@ -35,7 +33,6 @@ int main(int argc, char **argv){
                 default:
                         puts("Missing or invalid test number");
                         return EXIT_FAILURE;
-
                 case 1:
                         test1();
                         break;
@@ -50,5 +47,3 @@ int main(int argc, char **argv){
                         break;
 	}
 }
-	
->>>>>>> 702eb82060501ee3f5d0eb1f842cc6e855730ca4
