@@ -20,7 +20,7 @@ GROUP MEMBERS: Kevin Su (ks1507),
 
 6. After checking if the pointer is valid or not a call to free should mark the chunk as unoccupied and check for coalescing.
 
-7. Our mymalloc() and myfree() should not try to access addresses outside of the memory array as this will lead to unintended behaviours..
+7. Our mymalloc() and myfree() should not try to access addresses outside of the memory array as this will lead to unintended behaviours.
     
 (b) We intend to check these 6 properties listed by creating additional test files: test.c and tset2.c which will go over each of the cases described above. We will use various methods to evaluate how the methods(malloc and free) and the array interact with each other. More specifically, in our mymalloc.c source code we use conditional compilation by checking for the definition of a test macro. When we link our test.c file and mymalloc.c we include this macro providing us additional print and debugging statements for the sake of our correctness testing. We additionally make use of the basic test cases provided to us in err.c and used that to provide a base line level of correctness testing for our code. The first test file (test.c) will take a look at the basic cases as well as some edge case like call malloc twice or allocating memory which is too large for the global array. The second test file (test2.c) places a special emphasis on how well does the free method coalesce the free chuncks of memory. 
     
@@ -28,28 +28,27 @@ GROUP MEMBERS: Kevin Su (ks1507),
 	
 Test.c
 ---
-Test1(): Free the memory at an address that isn't returned by malloc()
+Test1(): Call malloc(200) then free(), then call malloc(200) and free() again. Then compare the first and second pointer from malloc. They should be the same as the expected behavior is for our program to free() the first chunk and coalesce and then the second call to malloc() should give us the same pointer. This proves properties(3 - 6) of our design.
 
-Test2(): Free the same address a second time
+Test2(): Call malloc(5000) and cheeck if the pointer is a NULL pointer. The expected result is for malloc() to return a NULL pointer as 5000 is greater than MEMSIZE which is 4096. This proves property 2 of our design.
 
-Test3(): Free memory that isnt already allocated  by malloc()
-	
-Test4(): Allocate memory that is larger than the global array
-
-Test5(): Run a valid test to see if our malloc() and free() works
 
 Test2.c
 ---
-Test1():
+Test1(): Check the edge cases of malloc sizes 4087, 4088, 4086, 4085, 4084. The expected result is that for malloc(4088) we should receive an error message and be returned a NULL pointer since the biggest number of bytes that can be allocated is 4097 - 9 = 4087 due to our design using 9 bytes for metadata. For any number of bytes from 4087 - 4077, malloc() should assign the whole payload to occupied and not be able to split. This test shows properties 1 & 2 of our design
 
-Test2():
+Test2(): Check if malloc(0) returns a NULL pointer. This checks our design decision to have malloc(0) return a NULL pointer instead of wasting memory by creating a new metadata header. 
 
-Test1(): check if free() coalesces previous chunks
+Test3(): Call malloc(455) 8 times. The result of this should be check if free() coalesces previous chunks
 
-Test2(): check if free() coalesces future chunks
+Test4(): check if free() coalesces future chunks
 	
-Test3(): check if free() coalesces previous and future chunks
-	
+Test5(): Check if a simple example of coalescing with the chunk after works properly.
+
+Test6(): Check if a simple example of coalescing with the chunk after works properly.
+
+Test7(): Check if a simple example of coalescing with the chunks before and after works properly.
+
 err.c
 ---
 case 1: check if myfree() prints an error when passed a non-block pointer (property 3) 
