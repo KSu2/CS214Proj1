@@ -6,20 +6,20 @@ void test1(){
 	free(p1);
 	void * p2 = malloc(200);
 	if(p1 == p2){
-		printf("SUCCESS! pointer is successfully created and freed");
+		printf("SUCCESS! pointer is successfully created and freed\n");
 	}
 	else{
-		printf("FAILURE! free() did not work as intended");
+		printf("FAILURE! free() did not work as intended\n");
 	}
 }
 //check double free
 void test2(){
 	void * t = malloc(5000);
 	if(!t){
-		printf("SUCCESS! uninitialized memory did not allocate memory when size > 4087");
+		printf("SUCCESS! uninitialized memory did not allocate memory when size > 4087\n");
 	}
 	else{
-		printf("FAILURE! uninitialized memory allocated memory when it was not supposed to");
+		printf("FAILURE! uninitialized memory allocated memory when it was not supposed to\n");
 	}
 }
 
@@ -27,10 +27,10 @@ void test3(){
         void * t = malloc(4087);
         void * p = malloc(1);
         if(!p){
-		printf("SUCCESS! didn't allocate memory when initialized memory was full");
+		printf("SUCCESS! didn't allocate memory when initialized memory was full\n");
 	}
 	else{
-		printf("FAILURE! allocated memory when it wasn't supposed to");
+		printf("FAILURE! allocated memory when it wasn't supposed to\n");
 	}
 }
 
