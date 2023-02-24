@@ -20,27 +20,6 @@ void test_three(){
 	free(a);
 }
 
-//check allocating more than 4069 bytes
-void test_four(){
-    void * t = malloc(5000);
-}
-
-
-// Valid free
-void test_five(){
-    void * org = malloc(200);
-    free(org);
-    int * copy = org;
-    org = malloc(200);
-    free(org);
-    if(org==copy){
-        printf("x = z = %p. New malloced address is the same as the old one.\n",copy);
-    }
-    else{
-    	printf("Perfectly Valid Free().\n");
-    }
-}
-
 
 int main() {
 
