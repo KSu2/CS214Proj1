@@ -28,10 +28,11 @@ GROUP MEMBERS: Kevin Su (ks1507),
 	
 Test.c
 ---
-Test1(): Call malloc(200) then free(), then call malloc(200) and free() again. Then compare the first and second pointer from malloc. They should be the same as the expected behavior is for our program to free() the first chunk and coalesce and then the second call to malloc() should give us the same pointer. This proves properties(3 - 6) of our design.
+Test1(): Check the basic functionality of malloc() and free(). Call malloc(200) then free(), then call malloc(200) and free() again. Then compare the first and second pointer from malloc. They should be the same as the expected behavior is for our program to free() the first chunk and coalesce and then the second call to malloc() should give us the same pointer. This test is to check properties 3-6 of our design.
 
-Test2(): Call malloc(5000) and cheeck if the pointer is a NULL pointer. The expected result is for malloc() to return a NULL pointer as 5000 is greater than MEMSIZE which is 4096. This proves property 2 of our design.
+Test2(): Check if malloc() catches error of not having enough memory when memory is uninitialized. Call malloc(5000) and cheeck if the pointer is a NULL pointer. The expected result is for malloc() to return a NULL pointer as 5000 is greater than MEMSIZE which is 4096. This shows property 2 of our design.
 
+test3(): Check if malloc() catches error of not having enough memory when memory is initialized. Call mallor(4087) which will mark the entirity of the memory array as occupied. Then call malloc(1) to check if malloc() will return a NULL pointer and print the appropriate error message. This test is to check property 1 and 7 of our design.
 
 Test2.c
 ---
